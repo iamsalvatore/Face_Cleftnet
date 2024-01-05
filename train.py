@@ -74,28 +74,9 @@ def reshape(data,target):
 
 X_train,X_test,y_train,y_test=reshape(data,target)
 
-def resnet50 ():
-    # The Convolutional Base of the Pre-Trained Model will be added as a Layer in this Model
-    Conv_Base = ResNet50(include_top = False, weights = 'imagenet', input_shape = (512,512, 3))
-
-    for layer in Conv_Base.layers[:-8]:
-        layer.trainable = False
-
-    model = Sequential()
-    model.add(Conv_Base)
-    model.add(Flatten())
-    model.add(Dense(units = 256, activation = 'relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(units = 1, activation = 'sigmoid'))
-
-    model.summary()
-
-    return model
-
-model = resnet50()
-
 
 def compile_fit_model(X_train,y_train):
+    model = ResNet50(include_top = False, weights = 'imagenet', input_shape = (512,512, 3))
 
     timestr = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     name = 'res_net_50-'+timestr #
@@ -112,30 +93,4 @@ def compile_fit_model(X_train,y_train):
     model.save("ResNet50_model")
 
 compile_fit_model(X_train,y_train)
-
-
-def plot_loss():
-    plt.plot(history.history['loss'],'r',label='training loss')
-    plt.plot(history.history['val_loss'],label='validation loss')
-    plt.xlabel('# epochs')
-    plt.ylabel('loss')
-    plt.legend()
-    plt.show()
-plot_loss()
-    
-def plot_acc():
-    plt.plot(history.history['accuracy'],'r',label='training accuracy')
-    plt.plot(history.history['val_accuracy'],label='validation accuracy')
-    plt.xlabel('# epochs')
-    plt.ylabel('loss')
-    plt.legend()
-    plt.show()
-plot_acc()
-
-
-def evaluate_model():
-    score = model.evaluate(X_test, y_test)
-    print("Test loss:", score[0])
-    print("Test accuracy:", score[1])
-evaluate_model()
 

@@ -34,11 +34,6 @@ from tensorflow.keras.applications.inception_v3 import InceptionV3
 from tensorflow.keras.layers import Input
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
-# config = tf.compat.v1.ConfigProto()
-# config.gpu_options.allow_growth = True
-# session =tf.compat.v1.InteractiveSession(config=config)
-# gpus= tf.config.experimental.list_physical_devices('GPU')
-# tf.config.experimental.set_memory_growth(gpus[0], True)
 
 
 
@@ -82,10 +77,6 @@ test_ds = resize_and_augment(test_ds)
 
 
 new_model = tf.keras.models.load_model('ResNet50_model')
-
-# x = new_model.output
-
-# x = new_model.layers[-1].output 
 
 hidden = Dense(120, activation='relu',name='Dense_pre')(new_model.layers[-2].output)
 # and a logistic layer -- let's say we have 200 classes
